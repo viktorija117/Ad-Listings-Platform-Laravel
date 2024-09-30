@@ -39,7 +39,8 @@ Route::middleware('auth')->group(function () {
     // Upravljanje oglasima - dostupno svim korisnicima
     Route::resource('ads', AdController::class);
     Route::delete('/ads/{ad}/images/{image}', [AdController::class, 'destroyImage'])->name('ads.image.destroy');
-
+    Route::resource('categories', CategoryController::class);
+    Route::resource('locations', LocationController::class);
 });
 
 // Autentifikacija i registracija

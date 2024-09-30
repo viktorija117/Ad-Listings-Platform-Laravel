@@ -29,11 +29,11 @@
                         Poslate poruke
                     </a>
                     @if(auth()->user()->can('manage', App\Models\Category::class))
-                        <a href="{{ route('categories.index') }}">Upravljaj kategorijama</a>
+                        <a href="{{ route('categories.index') }}" class="px-4 py-2 bg-red-600 text-white rounded-lg shadow-md hover:bg-red-700">Upravljaj kategorijama</a>
                     @endif
 
                     @if(auth()->user()->can('manage', App\Models\Location::class))
-                        <a href="{{ route('locations.index') }}">Upravljaj lokacijama</a>
+                        <a href="{{ route('locations.index') }}" class="px-4 py-2 bg-red-600 text-white rounded-lg shadow-md hover:bg-red-700">Upravljaj lokacijama</a>
                     @endif
                 </div>
             </div>
