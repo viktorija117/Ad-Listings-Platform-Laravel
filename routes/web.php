@@ -15,35 +15,32 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+// Grupa ruta za autentifikovane korisnike
 Route::middleware('auth')->group(function () {
+    // Profil
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-
-
     // Inbox i poslate poruke
     Route::get('/inbox', [MessageController::class, 'inbox'])->name('messages.inbox');
     Route::get('/sent', [MessageController::class, 'sent'])->name('messages.sent');
+
+    // Pretraga oglasa
+    Route::get('ads/search', [AdController::class, 'search'])->name('ads.search');
+
+    // Prikaz i upravljanje sopstvenim oglasima
+    Route::get('/my-ads', [AdController::class, 'myAds'])->name('my.ads');
+
+    // Kreiranje i slanje poruka (vezano za oglase)
+    Route::get('/ads/{ad}/message', [MessageController::class, 'create'])->name('messages.create');
+    Route::post('/ads/{ad}/message', [MessageController::class, 'store'])->name('messages.store');
+
+    // Upravljanje oglasima - dostupno svim korisnicima
+    Route::resource('ads', AdController::class);
+    Route::delete('/ads/{ad}/images/{image}', [AdController::class, 'destroyImage'])->name('ads.image.destroy');
+
 });
 
-Route::get('ads/search', [AdController::class, 'search'])->name('ads.search');
-Route::post('messages', [MessageController::class, 'store'])->name('messages.store');
-
-
-Route::get('/my-ads', [AdController::class, 'myAds'])->name('my.ads');
-Route::resource('ads', AdController::class);
-Route::delete('/ads/{ad}/images/{image}', [AdController::class, 'destroyImage'])->name('ads.image.destroy');
-
-
-
-
-Route::middleware(['auth', 'admin'])->group(function () {
-    // Upravljanje kategorijama i lokacijama - samo za admina
-    Route::resource('categories', CategoryController::class)->except(['show']);
-    Route::resource('locations', LocationController::class)->except(['show']);
-});
-
-Route::get('/ads/{ad}/message', [MessageController::class, 'create'])->name('messages.create');
-Route::post('/ads/{ad}/message', [MessageController::class, 'store'])->name('messages.store');
+// Autentifikacija i registracija
 require __DIR__.'/auth.php';

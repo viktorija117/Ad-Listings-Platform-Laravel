@@ -28,13 +28,12 @@
                     <a href="{{ route('messages.sent') }}" class="px-4 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700">
                         Poslate poruke
                     </a>
-                    @if(Auth::user()->isAdmin())
-                        <a href="{{ route('categories.index') }}" class="px-4 py-2 bg-red-600 text-white rounded-lg shadow-md hover:bg-red-700 text-center">
-                            Upravljaj kategorijama
-                        </a>
-                        <a href="{{ route('locations.index') }}" class="px-4 py-2 bg-red-600 text-white rounded-lg shadow-md hover:bg-red-700 text-center">
-                            Upravljaj lokacijama
-                        </a>
+                    @if(auth()->user()->can('manage', App\Models\Category::class))
+                        <a href="{{ route('categories.index') }}">Upravljaj kategorijama</a>
+                    @endif
+
+                    @if(auth()->user()->can('manage', App\Models\Location::class))
+                        <a href="{{ route('locations.index') }}">Upravljaj lokacijama</a>
                     @endif
                 </div>
             </div>

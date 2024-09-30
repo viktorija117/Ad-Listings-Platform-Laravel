@@ -6,10 +6,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Silber\Bouncer\Database\HasRolesAndAbilities;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, HasRolesAndAbilities;
 
     /**
      * The attributes that are mass assignable.
@@ -44,14 +45,4 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-    public function isAdmin(): bool
-    {
-        return $this->role === 'admin';
-    }
-
-    public function isUser(): bool
-    {
-        return $this->role === 'user';
-    }
-
 }

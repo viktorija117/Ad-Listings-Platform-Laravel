@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\Location;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Silber\Bouncer\BouncerFacade as Bouncer;
 
 class AdController extends Controller
 {
@@ -19,6 +20,11 @@ class AdController extends Controller
 
     public function create(): \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application
     {
+        // Proveri da li korisnik ima dozvolu za kreiranje oglasa
+        if (!auth()->user()->can('create', Ad::class)) {
+            return redirect()->route('ads.index')->with('error', 'Nemate dozvolu za kreiranje oglasa.');
+        }
+
         $categories = Category::all();
         $locations = Location::all();
         return view('ads.create', compact('categories', 'locations'));
@@ -26,6 +32,11 @@ class AdController extends Controller
 
     public function store(Request $request): \Illuminate\Http\RedirectResponse
     {
+        // Proveri da li korisnik ima dozvolu za kreiranje oglasa
+        if (!auth()->user()->can('create', Ad::class)) {
+            return redirect()->route('ads.index')->with('error', 'Nemate dozvolu za kreiranje oglasa.');
+        }
+
         $request->validate([
             'title' => 'required|max:255',
             'description' => 'required',
@@ -61,7 +72,8 @@ class AdController extends Controller
 
     public function edit(Ad $ad)
     {
-        if (auth()->user()->id !== $ad->user_id && !auth()->user()->isAdmin()) {
+        // Proveri da li korisnik može urediti ovaj oglas (vlasnik ili admin)
+        if (!auth()->user()->can('update', $ad)) {
             return redirect()->route('ads.index')->with('error', 'Nemate dozvolu za uređivanje ovog oglasa.');
         }
 
@@ -71,9 +83,13 @@ class AdController extends Controller
         return view('ads.edit', compact('ad', 'categories', 'locations'));
     }
 
-
     public function update(Request $request, Ad $ad)
     {
+        // Proveri da li korisnik može ažurirati ovaj oglas
+        if (!auth()->user()->can('update', $ad)) {
+            return redirect()->route('ads.index')->with('error', 'Nemate dozvolu za ažuriranje ovog oglasa.');
+        }
+
         $request->validate([
             'title' => 'required|max:255',
             'description' => 'required',
@@ -101,6 +117,11 @@ class AdController extends Controller
 
     public function destroyImage(Ad $ad, AdImage $image)
     {
+        // Proveri da li korisnik može obrisati slike (vlasnik ili admin)
+        if (!auth()->user()->can('delete', $ad)) {
+            return redirect()->route('ads.index')->with('error', 'Nemate dozvolu za brisanje slika oglasa.');
+        }
+
         if (Storage::exists('public/' . $image->image_path)) {
             Storage::delete('public/' . $image->image_path);
         }
@@ -110,11 +131,10 @@ class AdController extends Controller
         return redirect()->back()->with('success', 'Slika uspešno obrisana.');
     }
 
-
-
     public function destroy(Ad $ad)
     {
-        if (auth()->user()->id !== $ad->user_id && !auth()->user()->isAdmin()) {
+        // Proveri da li korisnik može obrisati ovaj oglas
+        if (!auth()->user()->can('delete', $ad)) {
             return redirect()->route('ads.index')->with('error', 'Nemate dozvolu za brisanje ovog oglasa.');
         }
 
@@ -149,10 +169,10 @@ class AdController extends Controller
 
     public function myAds()
     {
+        // Prikaz oglasa trenutnog korisnika
         $ads = Ad::where('user_id', auth()->id())->with('category', 'location')->get();
         return view('ads.my-ads', compact('ads'));
     }
-
-
 }
+
 
