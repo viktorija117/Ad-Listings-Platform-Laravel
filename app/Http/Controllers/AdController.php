@@ -8,7 +8,9 @@ use App\Models\Category;
 use App\Models\Location;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\View\View;
 use Silber\Bouncer\BouncerFacade as Bouncer;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class AdController extends Controller
 {
@@ -18,7 +20,7 @@ class AdController extends Controller
         return view('ads.index', compact('ads'));
     }
 
-    public function create(): \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application
+    public function create(): View|RedirectResponse
     {
         // Proveri da li korisnik ima dozvolu za kreiranje oglasa
         if (!auth()->user()->can('create', Ad::class)) {
@@ -70,7 +72,7 @@ class AdController extends Controller
         return view('ads.show', compact('ad'));
     }
 
-    public function edit(Ad $ad)
+ /*   public function edit(Ad $ad)
     {
         // Proveri da li korisnik može urediti ovaj oglas (vlasnik ili admin)
         if (!auth()->user()->can('update', $ad)) {
@@ -82,8 +84,8 @@ class AdController extends Controller
 
         return view('ads.edit', compact('ad', 'categories', 'locations'));
     }
-
-    public function update(Request $request, Ad $ad)
+*/
+/*    public function update(Request $request, Ad $ad)
     {
         // Proveri da li korisnik može ažurirati ovaj oglas
         if (!auth()->user()->can('update', $ad)) {
@@ -114,7 +116,7 @@ class AdController extends Controller
 
         return redirect()->route('ads.index')->with('success', 'Oglas uspešno ažuriran.');
     }
-
+*/
     public function destroyImage(Ad $ad, AdImage $image)
     {
         // Proveri da li korisnik može obrisati slike (vlasnik ili admin)

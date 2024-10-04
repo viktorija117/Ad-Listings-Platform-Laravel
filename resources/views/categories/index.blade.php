@@ -19,6 +19,9 @@
                         <ul class="list-disc list-inside">
                             @foreach($categories as $category)
                                 <li>{{ $category->name }}</li>
+                                <a href="{{ route('categories.create') }}" class="px-2 py-1 bg-green-600 text-white rounded-lg shadow-md hover:bg-green-700">
+                                    Dodaj novu kategoriju
+                                </a>
                             @endforeach
                         </ul>
                     @endif

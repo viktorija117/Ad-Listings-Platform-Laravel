@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Ad;
 use Illuminate\Database\Seeder;
 use Silber\Bouncer\BouncerFacade as Bouncer;
 
@@ -13,17 +14,17 @@ class RolesAndPermissionsSeeder extends Seeder
         Bouncer::allow('admin')->toManage(\App\Models\Category::class);
         Bouncer::allow('admin')->toManage(\App\Models\Location::class);
 
-        // Dozvoli adminu da upravlja bilo kojim oglasom (svojim i tuđim)
-        Bouncer::allow('admin')->toManage(\App\Models\Ad::class);
+        // Dozvoli adminu da brise bilo koji oglas
+        Bouncer::allow('admin')->to('delete', Ad::class);
 
         // Dozvoli adminu da šalje poruke
         Bouncer::allow('admin')->to('send-messages');
 
 
         // Dozvoli korisnicima da kreiraju i upravljaju samo svojim oglasima
-        Bouncer::allow('user')->to('create', App\Models\Ad::class);
-        Bouncer::allow('user')->to('update', App\Models\Ad::class);
-        Bouncer::allow('user')->to('delete', App\Models\Ad::class);
+        Bouncer::allow('user')->to('create', Ad::class);
+        Bouncer::allow('user')->toOwn(Ad::class)->to('update');
+        Bouncer::allow('user')->toOwn(Ad::class)->to('delete');
 
         // Dozvoli korisnicima da šalju poruke
         Bouncer::allow('user')->to('send-messages');
