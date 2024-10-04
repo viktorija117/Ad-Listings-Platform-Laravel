@@ -14,11 +14,39 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class AdController extends Controller
 {
-    public function index(): \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application
+    public function index(Request $request): \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application
     {
-        $ads = Ad::with('category', 'location', 'user')->get();
-        return view('ads.index', compact('ads'));
+        $query = Ad::query();
+
+        // Filtriranje po kategoriji
+        if ($request->filled('category_id')) {
+            $query->where('category_id', $request->category_id);
+        }
+
+        // Filtriranje po lokaciji
+        if ($request->filled('location_id')) {
+            $query->where('location_id', $request->location_id);
+        }
+
+        // Sortiranje po ceni
+        if ($request->filled('sort_by')) {
+            if ($request->sort_by == 'price_asc') {
+                $query->orderBy('price', 'asc');
+            } elseif ($request->sort_by == 'price_desc') {
+                $query->orderBy('price', 'desc');
+            }
+        }
+
+        // Učitaj oglase sa filtrima i sortiranjem
+        $ads = $query->get();
+
+        // Učitaj sve kategorije i lokacije za prikaz u formi
+        $categories = Category::all();
+        $locations = Location::all();
+
+        return view('ads.index', compact('ads', 'categories', 'locations'));
     }
+
 
     public function create(): View|RedirectResponse
     {

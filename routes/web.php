@@ -43,6 +43,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('locations', LocationController::class);
     Route::get('ads/{ad}/edit', [AdController::class, 'edit'])->name('ads.edit'); // za prikaz forme za editovanje
     Route::put('ads/{ad}', [AdController::class, 'update'])->name('ads.update'); // za ažuriranje oglasa
+    Route::get('/ads', [AdController::class, 'index'])->name('ads.index');
 
 });
 

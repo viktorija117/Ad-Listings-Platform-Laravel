@@ -17,6 +17,53 @@
                 @endif
                 <h3 class="text-2xl font-bold mb-4">Dostupni oglasi</h3>
 
+                    <!-- Filter i sortiranje -->
+                    <form action="{{ route('ads.index') }}" method="GET">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <!-- Kategorije -->
+                            <div>
+                                <label for="category_id" class="block text-sm font-medium text-gray-700">Kategorija</label>
+                                <select name="category_id" id="category_id" class="block w-full mt-1 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                                    <option value="">Sve kategorije</option>
+                                    @foreach($categories as $category)
+                                        <option value="{{ $category->id }}" {{ request('category_id') == $category->id ? 'selected' : '' }}>
+                                            {{ $category->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <!-- Lokacije -->
+                            <div>
+                                <label for="location_id" class="block text-sm font-medium text-gray-700">Lokacija</label>
+                                <select name="location_id" id="location_id" class="block w-full mt-1 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                                    <option value="">Sve lokacije</option>
+                                    @foreach($locations as $location)
+                                        <option value="{{ $location->id }}" {{ request('location_id') == $location->id ? 'selected' : '' }}>
+                                            {{ $location->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <!-- Sortiranje po ceni -->
+                            <div>
+                                <label for="sort_by" class="block text-sm font-medium text-gray-700">Sortiraj po ceni</label>
+                                <select name="sort_by" id="sort_by" class="block w-full mt-1 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                                    <option value="">Bez sortiranja</option>
+                                    <option value="price_asc" {{ request('sort_by') == 'price_asc' ? 'selected' : '' }}>Cena (rast)</option>
+                                    <option value="price_desc" {{ request('sort_by') == 'price_desc' ? 'selected' : '' }}>Cena (pad)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="mt-4">
+                            <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700">
+                                Primeni filter
+                            </button>
+                        </div>
+                    </form>
+
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     @foreach($ads as $ad)
                         <div class="p-4 bg-gray-100 rounded-lg shadow-md">

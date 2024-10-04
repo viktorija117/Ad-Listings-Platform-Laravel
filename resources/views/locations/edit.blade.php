@@ -20,6 +20,15 @@
                         Ažuriraj
                     </button>
                 </form>
+
+                <!-- Forma za brisanje lokacije -->
+                <form action="{{ route('locations.destroy', $location) }}" method="POST" class="mt-4">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="px-4 py-2 bg-red-600 text-white rounded-lg shadow-md hover:bg-red-700" onclick="return confirm('Da li ste sigurni da želite da obrišete ovu lokaciju?')">
+                        Obriši lokaciju
+                    </button>
+                </form>
             </div>
         </div>
     </div>

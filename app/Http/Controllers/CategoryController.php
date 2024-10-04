@@ -38,6 +38,12 @@ class CategoryController extends Controller
 
     public function update(Request $request, Category $category)
     {
+
+        // Ako kategorija ima oglase, zabrani brisanje
+        if ($category->ads()->count() > 0) {
+            return redirect()->route('categories.index')->with('error', 'Ne možete uređivati kategoriju jer ima povezane oglase.');
+        }
+
         $request->validate([
             'name' => 'required|string|max:255',
         ]);
@@ -51,7 +57,14 @@ class CategoryController extends Controller
 
     public function destroy(Category $category)
     {
+        // Ako kategorija ima oglase, zabrani brisanje
+        if ($category->ads()->count() > 0) {
+            return redirect()->route('categories.index')->with('error', 'Ne možete obrisati kategoriju jer ima povezane oglase.');
+        }
+
+        // Ako nema oglasa, obriši kategoriju
         $category->delete();
+
         return redirect()->route('categories.index')->with('success', 'Kategorija uspešno obrisana.');
     }
 }
