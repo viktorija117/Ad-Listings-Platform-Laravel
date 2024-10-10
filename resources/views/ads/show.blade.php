@@ -34,7 +34,7 @@
                     <a href="{{ route('messages.chat', $ad) }}" class="mt-2 inline-block px-4 py-2 bg-green-800 text-white rounded-lg shadow-md hover:bg-green-700">
                         Otvori čet
                     </a>
-                @endif
+                @endif 
             </div>
         </div>
     </div>

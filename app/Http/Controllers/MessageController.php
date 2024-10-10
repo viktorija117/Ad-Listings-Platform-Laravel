@@ -9,13 +9,13 @@ use Illuminate\Support\Facades\Auth;
 
 class MessageController extends Controller
 {
-    // Prikaz četa vezanog za oglas (ovo ostaje isto)
+    // Prikaz četa vezanog za oglas
     public function salesMessages()
     {
         // Oglasi koje je korisnik postavio
         $ads = Ad::where('user_id', auth()->id())->pluck('id');
 
-        // Prikaz jedinstvenih čatova za oglase koje je korisnik postavio
+        // Prikaz cetova za oglase koje je korisnik postavio
         $chats = Message::whereIn('ad_id', $ads)
             ->select('ad_id', 'sender_id')
             ->distinct()
@@ -25,10 +25,9 @@ class MessageController extends Controller
         return view('messages.sales', compact('chats'));
     }
 
-    // Prikaz svih čatova za kupovinu (korisnik je poslao poruku vlasniku oglasa)
+    // Prikaz svih cetova gde je korisnik poslao poruku
     public function purchaseMessages()
     {
-        // Prikaz jedinstvenih čatova koje je korisnik inicirao
         $chats = Message::where('sender_id', auth()->id())
             ->select('ad_id', 'receiver_id')
             ->distinct()
@@ -38,10 +37,10 @@ class MessageController extends Controller
         return view('messages.purchases', compact('chats'));
     }
 
-    // Prikaz svih poruka u okviru jednog četa
+    // Prikaz svih poruka u okviru jednog ceta
     public function showChat(Ad $ad)
     {
-        // Učitaj sve poruke vezane za oglas između trenutnog korisnika i vlasnika oglasa
+        // Sve poruke vezane za oglas između trenutnog korisnika i vlasnika oglasa
         $messages = Message::where('ad_id', $ad->id)
             ->orderBy('created_at', 'asc')
             ->with('sender')
@@ -50,7 +49,7 @@ class MessageController extends Controller
         return view('messages.chat', compact('ad', 'messages'));
     }
 
-    // Čuvanje poruke (ovo ostaje isto)
+    // Cuvanje poruke
     public function store(Request $request, Ad $ad)
     {
         $request->validate([

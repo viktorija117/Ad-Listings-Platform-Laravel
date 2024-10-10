@@ -20,7 +20,7 @@
                             <div class="p-4 bg-gray-100 rounded-lg shadow-md">
                                 <div x-data="{ currentImage: 0 }" class="relative">
                                     <div class="relative overflow-hidden w-full h-64">
-                                        <!-- Prikaz slika, samo jedna slika je prikazana u bilo kom trenutku -->
+                                        <!-- Prikaz slika -->
                                         @foreach ($ad->images as $index => $image)
                                             <img
                                                 x-show="currentImage === {{ $index }}"

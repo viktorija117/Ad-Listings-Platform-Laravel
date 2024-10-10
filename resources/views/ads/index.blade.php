@@ -69,7 +69,7 @@
                         <div class="p-4 bg-gray-100 rounded-lg shadow-md">
                             <div x-data="{ currentImage: 0 }" class="relative">
                                 <div class="relative overflow-hidden w-full h-64">
-                                    <!-- Prikaz slika, samo jedna slika je prikazana u bilo kom trenutku -->
+                                    <!-- Prikaz slika -->
                                     @foreach ($ad->images as $index => $image)
                                         <img
                                             x-show="currentImage === {{ $index }}"
@@ -98,27 +98,6 @@
                             <p class="text-gray-900 font-bold">{{ $ad->price }} RSD</p>
                             <p class="text-gray-600">Lokacija: {{ $ad->location->name }}</p>
                             <p class="text-gray-600">Kategorija: {{ $ad->category->name }}</p>
-
-                            <!-- Prikaz opcija za brisanje i slanje poruka -->
-
-                            @if (auth()->user()->isAn('admin'))
-                                <!-- Prikaz opcije za brisanje oglasa -->
-                                <form action="{{ route('ads.destroy', $ad) }}" method="POST" onsubmit="return confirm('Da li ste sigurni da želite obrisati ovaj oglas?');">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="mt-2 inline-block px-4 py-2 bg-red-800 text-white rounded-lg shadow-md hover:bg-red-700"
-                                    >Obriši</button>
-                                </form>
-                            @endif
-
-                            @if(auth()->user()->can('send-messages', $ad))
-                                <!-- Prikaz opcije za slanje poruke vlasniku oglasa -->
-                                <a href="{{ route('messages.create', $ad) }}" class="mt-2 inline-block px-4 py-2 bg-green-800 text-white rounded-lg shadow-md hover:bg-green-700"
-                                >Pošalji poruku</a>
-                                <a href="{{ route('messages.chat', $ad) }}" class="mt-2 inline-block px-4 py-2 bg-green-800 text-white rounded-lg shadow-md hover:bg-green-700">
-                                    Otvori čet
-                                </a>
-                            @endif
 
                             <a href="{{ route('ads.show', $ad) }}" class="mt-2 inline-block px-4 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700">
                                 Pogledaj detalje

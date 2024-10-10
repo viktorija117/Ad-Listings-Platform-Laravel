@@ -9,7 +9,7 @@
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-6">
 
-                <!-- Prikaz s kim se dopisujemo i o kom oglasu je reč -->
+                <!-- S kim se dopisujemo i u vezi cega -->
                 <div class="mb-6 p-4 bg-gray-100 rounded-lg shadow-md">
                     <h3 class="text-lg font-semibold">
                         @if($messages->first()->sender_id === auth()->id())
@@ -25,7 +25,7 @@
                 <div class="space-y-4">
                     @foreach($messages as $message)
                         @if($message->sender_id === auth()->id())
-                            <!-- Poruka trenutnog korisnika (desna strana) -->
+                            <!-- Poruka trenutnog korisnika -->
                             <div class="flex justify-end">
                                 <div class="bg-gray-200 text-gray-900 rounded-lg p-4 max-w-md shadow-lg">
                                     <p>{{ $message->message }}</p>
@@ -33,7 +33,7 @@
                                 </div>
                             </div>
                         @else
-                            <!-- Poruka drugog korisnika (leva strana) -->
+                            <!-- Poruka drugog korisnika -->
                             <div class="flex justify-start">
                                 <div class="bg-gray-200 text-gray-900 rounded-lg p-4 max-w-md shadow-lg">
                                     <p>{{ $message->message }}</p>
@@ -44,7 +44,7 @@
                     @endforeach
                 </div>
 
-                <!-- Forma za slanje nove poruke -->
+                <!-- Slanje nove poruke -->
                 <form action="{{ route('messages.store', $ad) }}" method="POST" class="mt-6">
                     @csrf
                     <textarea name="message" class="w-full border border-gray-300 rounded-lg p-2" rows="3" placeholder="Unesite poruku"></textarea>

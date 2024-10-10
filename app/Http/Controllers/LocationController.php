@@ -38,7 +38,7 @@ class LocationController extends Controller
 
     public function update(Request $request, Location $location)
     {
-        // Ako kategorija ima oglase, zabrani brisanje
+        // Ako lokacija ima oglase, zabrani edit
         if ($location->ads()->count() > 0) {
             return redirect()->route('locations.index')->with('error', 'Ne možete urediti lokaciju jer ima povezane oglase.');
         }
@@ -56,11 +56,10 @@ class LocationController extends Controller
 
     public function destroy(Location $location)
     {
-        // Ako kategorija ima oglase, zabrani brisanje
+        // Ako lokacija ima oglase, zabrani brisanje
         if ($location->ads()->count() > 0) {
             return redirect()->route('locations.index')->with('error', 'Ne možete obrisati lokaciju jer ima povezane oglase.');
         }
-        // Sada možeš obrisati lokaciju
         $location->delete();
 
         return redirect()->route('locations.index')->with('success', 'Lokacija uspešno obrisana.');

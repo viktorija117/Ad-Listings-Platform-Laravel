@@ -23,7 +23,6 @@ class RolesAndPermissionsSeeder extends Seeder
 
         // Dozvoli korisnicima da kreiraju i upravljaju samo svojim oglasima
         Bouncer::allow('user')->to('create', Ad::class);
-        Bouncer::allow('user')->toOwn(Ad::class)->to('update');
         Bouncer::allow('user')->toOwn(Ad::class)->to('delete');
 
         // Dozvoli korisnicima da šalju poruke

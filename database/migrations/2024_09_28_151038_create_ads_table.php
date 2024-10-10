@@ -9,7 +9,6 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    // 2023_10_01_create_ads_table.php
     public function up()
     {
         Schema::create('ads', function (Blueprint $table) {
