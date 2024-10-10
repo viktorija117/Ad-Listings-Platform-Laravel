@@ -23,9 +23,6 @@
 
                 <!-- Ako je vlasnik oglasa -->
                 @if(auth()->user()->id === $ad->user_id)
-                    <a href="{{ route('ads.edit', $ad) }}" class="px-4 py-2 bg-yellow-600 text-white rounded-lg shadow-md hover:bg-yellow-700">
-                        Uredi oglas
-                    </a>
                     <form action="{{ route('ads.destroy', $ad) }}" method="POST" class="inline-block">
                         @csrf
                         @method('DELETE')
@@ -34,9 +31,8 @@
                         </button>
                     </form>
                 @else
-                    <!-- Ako nije vlasnik oglasa -->
-                    <a href="{{ route('messages.create', $ad) }}" class="px-4 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700">
-                        Pošalji poruku prodavcu
+                    <a href="{{ route('messages.chat', $ad) }}" class="mt-2 inline-block px-4 py-2 bg-green-800 text-white rounded-lg shadow-md hover:bg-green-700">
+                        Otvori čet
                     </a>
                 @endif
             </div>

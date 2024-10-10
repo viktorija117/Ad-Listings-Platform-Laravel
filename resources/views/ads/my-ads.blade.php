@@ -51,9 +51,6 @@
                                 <p class="text-gray-600">Lokacija: {{ $ad->location->name }}</p>
                                 <p class="text-gray-600">Kategorija: {{ $ad->category->name }}</p>
 
-                                {{--<a href="{{ route('ads.update', $ad) }}" class="mt-2 inline-block px-4 py-2 bg-yellow-600 text-white rounded-lg shadow-md hover:bg-yellow-700">
-                                    Uredi oglas
-                                </a>--}}
 
                                 <form action="{{ route('ads.destroy', $ad) }}" method="POST" class="inline-block mt-2">
                                     @csrf

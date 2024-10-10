@@ -44,6 +44,12 @@ Route::middleware('auth')->group(function () {
     Route::get('ads/{ad}/edit', [AdController::class, 'edit'])->name('ads.edit'); // za prikaz forme za editovanje
     Route::put('ads/{ad}', [AdController::class, 'update'])->name('ads.update'); // za ažuriranje oglasa
     Route::get('/ads', [AdController::class, 'index'])->name('ads.index');
+    Route::get('/ads/{ad}/chat', [MessageController::class, 'showChat'])->name('messages.chat');
+// Prodaja - prikaz poruka za oglase koje je korisnik postavio
+    Route::get('/messages/sales', [MessageController::class, 'salesMessages'])->name('messages.sales');
+
+// Kupovina - prikaz poruka koje je korisnik poslao vlasnicima drugih oglasa
+    Route::get('/messages/purchases', [MessageController::class, 'purchaseMessages'])->name('messages.purchases');
 
 });
 

@@ -44,8 +44,10 @@
                     <div class="text-indigo-500 mb-4">
                         <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7 4 7-4v4l-7 4-7-4V8z"></path></svg>
                     </div>
-                    <h4 class="text-lg font-bold mb-4 text-gray-800">Primljene poruke</h4>
-                    <a href="{{ route('messages.inbox') }}" class="px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700">Pregledaj primljene</a>
+                    <h4 class="text-lg font-bold mb-4 text-gray-800">Prodaja</h4>
+                    <a href="{{ route('messages.sales') }}" class="mt-2 inline-block px-4 py-2 bg-yellow-600 text-white rounded-lg shadow-md hover:bg-yellow-700">
+                        Poruke (Prodaja)
+                    </a>
                 </div>
 
                 <div class="bg-white rounded-xl shadow-md p-6 flex flex-col items-center">
@@ -53,9 +55,18 @@
                         <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4l8 8m0 0l8-8m-8 8V12"></path></svg>
                     </div>
                     <h4 class="text-lg font-bold mb-4 text-gray-800">Poslate poruke</h4>
-                    <a href="{{ route('messages.sent') }}" class="px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700">Pregledaj poslate</a>
+                    <a href="{{ route('messages.purchases') }}" class="mt-2 inline-block px-4 py-2 bg-green-600 text-white rounded-lg shadow-md hover:bg-green-700">
+                        Poruke (Kupovina)
+                    </a>
                 </div>
             </div>
+
+
+
+
+
+
+
 
             <!-- Grupa za administraciju -->
             @if(auth()->user()->can('manage', App\Models\Category::class) || auth()->user()->can('manage', App\Models\Location::class))

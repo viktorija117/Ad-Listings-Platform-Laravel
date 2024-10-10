@@ -99,12 +99,7 @@
                             <p class="text-gray-600">Lokacija: {{ $ad->location->name }}</p>
                             <p class="text-gray-600">Kategorija: {{ $ad->category->name }}</p>
 
-                            <!-- Prikaz opcija za uređivanje, brisanje i slanje poruka -->
-                            @if (auth()->user()->isAn('admin'))
-                                <!-- Prikaz opcije za uređivanje oglasa -->
-                                <a href="{{ route('ads.edit', $ad) }}" class="mt-2 inline-block px-4 py-2 bg-blue-800 text-white rounded-lg shadow-md hover:bg-blue-700"
-                                >Uredi</a>
-                            @endif
+                            <!-- Prikaz opcija za brisanje i slanje poruka -->
 
                             @if (auth()->user()->isAn('admin'))
                                 <!-- Prikaz opcije za brisanje oglasa -->
@@ -120,11 +115,16 @@
                                 <!-- Prikaz opcije za slanje poruke vlasniku oglasa -->
                                 <a href="{{ route('messages.create', $ad) }}" class="mt-2 inline-block px-4 py-2 bg-green-800 text-white rounded-lg shadow-md hover:bg-green-700"
                                 >Pošalji poruku</a>
+                                <a href="{{ route('messages.chat', $ad) }}" class="mt-2 inline-block px-4 py-2 bg-green-800 text-white rounded-lg shadow-md hover:bg-green-700">
+                                    Otvori čet
+                                </a>
                             @endif
 
                             <a href="{{ route('ads.show', $ad) }}" class="mt-2 inline-block px-4 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700">
                                 Pogledaj detalje
                             </a>
+
+
                         </div>
                     @endforeach
                 </div>
