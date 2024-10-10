@@ -8,12 +8,19 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-6">
+                @if(session('error'))
+                    <div class="alert alert-danger bg-red-700">
+                        {{ session('error') }}
+                    </div>
+                @endif
                 <!-- Prikaz slike oglasa -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                     @foreach ($ad->images as $image)
                         <img src="{{ asset('storage/' . $image->image_path) }}" alt="Slika oglasa" class="w-full h-64 object-cover">
                     @endforeach
                 </div>
+
+                <!-- Naslov, opis, cena, kategorija, lokacija, vlasnik oglasa -->
                 <h3 class="text-2xl font-bold mb-4">{{ $ad->title }}</h3>
                 <p class="text-gray-700">{{ $ad->description }}</p>
                 <p class="text-gray-900 font-bold">{{ $ad->price }} RSD</p>
@@ -31,14 +38,25 @@
                         </button>
                     </form>
                 @else
+                    <!-- Prikaz dugmeta za otvaranje četa -->
                     <a href="{{ route('messages.chat', $ad) }}" class="mt-2 inline-block px-4 py-2 bg-green-800 text-white rounded-lg shadow-md hover:bg-green-700">
                         Otvori čet
                     </a>
-                @endif 
+
+                    <!-- Forma za slanje poruke -->
+                    <form action="{{ route('messages.store', $ad) }}" method="POST" class="mt-6">
+                        @csrf
+                        <textarea name="message" class="w-full border border-gray-300 rounded-lg p-2" rows="3" placeholder="Unesite poruku"></textarea>
+
+                        <!-- Automatski postavljamo ID vlasnika oglasa kao primaoca -->
+                        <input type="hidden" name="receiver_id" value="{{ $ad->user->id }}">
+
+                        <button type="submit" class="mt-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                            Pošalji poruku
+                        </button>
+                    </form>
+                @endif
             </div>
         </div>
     </div>
 </x-app-layout>
-
-
-

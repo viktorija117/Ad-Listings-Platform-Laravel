@@ -37,25 +37,15 @@
                 </div>
             </div>
 
-            <!-- Grupa za poruke -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Grupa za poruke (koristi tvoju logiku za prikaz poruka) -->
+            <div class="">
                 <div class="bg-white rounded-xl shadow-md p-6 flex flex-col items-center">
                     <div class="text-yellow-600 mb-4">
                         <i class="fas fa-comment-dots text-current"></i>
                     </div>
-                    <h4 class="text-lg font-bold mb-4 text-gray-800">Kome si slao poruke?</h4>
-                    <a href="{{ route('messages.purchases') }}" class="mt-2 inline-block px-4 py-2 bg-yellow-600 text-white rounded-lg shadow-md hover:bg-yellow-700">
-                        Pogledaj
-                    </a>
-                </div>
-
-                <div class="bg-white rounded-xl shadow-md p-6 flex flex-col items-center">
-                    <div class="text-yellow-600 mb-4">
-                        <i class="fas fa-comment-medical text-current"></i>
-                    </div>
-                    <h4 class="text-lg font-bold mb-4 text-gray-800">Ko ti je slao poruke?</h4>
-                    <a href="{{ route('messages.sales') }}" class="mt-2 inline-block px-4 py-2 bg-yellow-600 text-white rounded-lg shadow-md hover:bg-yellow-700">
-                        pogledaj
+                    <h4 class="text-lg font-bold mb-4 text-gray-800">PORUKE</h4>
+                    <a href="{{ route('messages.index') }}" class="mt-2 inline-block px-4 py-2 bg-green-600 text-white rounded-lg shadow-md hover:bg-green-700">
+                        Pogledaj sve četove
                     </a>
                 </div>
             </div>

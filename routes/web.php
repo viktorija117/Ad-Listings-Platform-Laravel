@@ -56,9 +56,12 @@ Route::middleware('auth')->group(function () {
     // -----------------------------------------
     // Poruke vezane za kupovinu/prodaju oglasa
     // -----------------------------------------
-    Route::get('/ads/{ad}/chat', [MessageController::class, 'showChat'])->name('messages.chat'); // Prikaz četa za oglas
-    Route::get('/messages/sales', [MessageController::class, 'salesMessages'])->name('messages.sales'); // Prikaz poruka koje je korisnik dobio kao prodavac
-    Route::get('/messages/purchases', [MessageController::class, 'purchaseMessages'])->name('messages.purchases'); // Prikaz poruka koje je korisnik poslao kao kupac
+    // Prikaz svih chatova gde je korisnik učesnik
+    Route::get('/messages', [MessageController::class, 'index'])->name('messages.index');
+    // Prikaz poruka za određeni oglas
+    Route::get('/ads/{ad}/chat', [MessageController::class, 'showChat'])->name('messages.chat');
+    // Slanje nove poruke
+    Route::post('/ads/{ad}/message', [MessageController::class, 'store'])->name('messages.store');
 });
 
 // -----------------------------------------
