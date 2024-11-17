@@ -10,17 +10,17 @@ class RolesSeeder extends Seeder
 {
     public function run()
     {
-        // Kreiraj uloge
-        Bouncer::role()->firstOrCreate(['name' => 'admin', 'title' => 'Administrator']);
-        Bouncer::role()->firstOrCreate(['name' => 'user', 'title' => 'Regular User']);
 
-        // Dodeli admin ulogu korisniku sa ID-jem 1
-        $adminUser = User::find(1);
-        Bouncer::assign('admin')->to($adminUser);
+        // Dodeli admin ulogu korisniku sa email-om 'admin@example.com'
+        $adminUser = User::where('email', 'admin@example.com')->first();
+        if ($adminUser) {
+            Bouncer::assign('admin')->to($adminUser);
+        }
 
-        // Dodeli user ulogu korisniku sa ID-jem 2
-        $regularUser = User::find(2);
-        Bouncer::assign('user')->to($regularUser);
+        // Dodeli user ulogu korisniku sa email-om 'regular@example.com'
+        $regularUser = User::where('email', 'regular@example.com')->first();
+        if ($regularUser) {
+            Bouncer::assign('user')->to($regularUser);
+        }
     }
 }
-

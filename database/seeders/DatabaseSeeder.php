@@ -13,11 +13,20 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        $this->call([
+            RolesAndPermissionsSeeder::class, // Prvo kreiraj dozvole i uloge
+            RolesSeeder::class,              // Zatim dodeli role korisnicima
+        ]);
 
         User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+            'name' => 'Admin User',
+            'email' => 'admin@example.com',
+            'password' => 'admin'
+        ]);
+        User::factory()->create([
+            'name' => 'Regular User',
+            'email' => 'regular@example.com',
+            'password' => 'regular'
         ]);
     }
 }

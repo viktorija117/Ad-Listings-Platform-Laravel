@@ -18,11 +18,13 @@ Chat system tied to specific ads.
 git clone https://github.com/viktorija117/KupujemProdajem-Laravel
 - Install dependencies:
 composer install && npm install
+npm run dev
 Set up .env file:
 cp .env.example .env
 - Generate app key:
 php artisan key:generate
 - Run migrations:
 php artisan migrate --seed
+php artisan db:seed --class=RolesAndPermissionsSeeder
 - Start the app:
 php artisan serve

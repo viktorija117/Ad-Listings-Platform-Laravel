@@ -10,6 +10,10 @@ class RolesAndPermissionsSeeder extends Seeder
 {
     public function run()
     {
+        // Kreiraj uloge ako ne postoje
+        Bouncer::role()->firstOrCreate(['name' => 'admin', 'title' => 'Administrator']);
+        Bouncer::role()->firstOrCreate(['name' => 'user', 'title' => 'Regular User']);
+
         // Dozvoli adminu da upravlja (kreira, menja, briše) kategorijama i lokacijama
         Bouncer::allow('admin')->toManage(\App\Models\Category::class);
         Bouncer::allow('admin')->toManage(\App\Models\Location::class);
