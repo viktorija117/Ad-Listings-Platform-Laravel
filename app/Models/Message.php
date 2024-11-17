@@ -13,15 +13,18 @@ class Message extends Model
         'sender_id', 'receiver_id', 'ad_id', 'message'
     ];
 
-    public function sender() {
+    public function sender()
+    {
         return $this->belongsTo(User::class, 'sender_id');
     }
 
-    public function receiver() {
+    public function receiver()
+    {
         return $this->belongsTo(User::class, 'receiver_id');
     }
 
-    public function ad() {
-        return $this->belongsTo(Ad::class);
+    public function ad()
+    {
+        return $this->belongsTo(Ad::class, 'ad_id');
     }
 }

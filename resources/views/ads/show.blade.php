@@ -39,11 +39,12 @@
                     </form>
                 @else
                     <!-- Prikaz dugmeta za otvaranje četa -->
-                    <a href="{{ route('messages.chat', $ad) }}" class="mt-2 inline-block px-4 py-2 bg-green-800 text-white rounded-lg shadow-md hover:bg-green-700">
-                        Otvori čet
-                    </a>
+                        <a href="{{ route('messages.chat', ['ad' => $ad->id, 'partnerId' => $ad->user->id]) }}" class="mt-2 inline-block px-4 py-2 bg-green-800 text-white rounded-lg shadow-md hover:bg-green-700">
+                            Otvori čet
+                        </a>
 
-                    <!-- Forma za slanje poruke -->
+
+                        <!-- Forma za slanje poruke -->
                     <form action="{{ route('messages.store', $ad) }}" method="POST" class="mt-6">
                         @csrf
                         <textarea name="message" class="w-full border border-gray-300 rounded-lg p-2" rows="3" placeholder="Unesite poruku"></textarea>

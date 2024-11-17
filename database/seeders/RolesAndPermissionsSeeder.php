@@ -24,10 +24,14 @@ class RolesAndPermissionsSeeder extends Seeder
         // Dozvoli adminu da šalje poruke
         Bouncer::allow('admin')->to('send-messages');
 
+        // Dozvoli adminu da kreira oglase
+        Bouncer::allow('admin')->to('create', Ad::class);
 
         // Dozvoli korisnicima da kreiraju i upravljaju samo svojim oglasima
         Bouncer::allow('user')->to('create', Ad::class);
         Bouncer::allow('user')->toOwn(Ad::class)->to('delete');
+        Bouncer::allow('user')->toOwn(Ad::class)->to('update');
+
 
         // Dozvoli korisnicima da šalju poruke
         Bouncer::allow('user')->to('send-messages');

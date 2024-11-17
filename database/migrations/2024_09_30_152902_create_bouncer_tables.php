@@ -7,11 +7,6 @@ use Silber\Bouncer\Database\Models;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
         Schema::create(Models::table('abilities'), function (Blueprint $table) {
@@ -77,11 +72,6 @@ return new class extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::drop(Models::table('permissions'));

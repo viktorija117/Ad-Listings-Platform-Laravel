@@ -23,9 +23,11 @@ Route::middleware('auth')->group(function () {
     // -----------------------------------------
     // Profil korisnika (prikaz, izmena, brisanje)
     // -----------------------------------------
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit'); // Prikaz forme za izmenu profila
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update'); // Ažuriranje profila
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy'); // Brisanje profila
+    Route::controller(ProfileController::class)->prefix('profile')->group(function () {
+        Route::get( 'edit')->name('profile.edit'); // Prikaz forme za izmenu profila
+        Route::patch('update')->name('profile.update'); // Ažuriranje profila
+        Route::delete( 'destroy')->name('profile.destroy'); // Brisanje profila
+    });
 
     // -----------------------------------------
     // Oglasi - pretraga i prikaz
@@ -36,8 +38,10 @@ Route::middleware('auth')->group(function () {
     // -----------------------------------------
     // Poruke
     // -----------------------------------------
-    Route::get('/ads/{ad}/message', [MessageController::class, 'create'])->name('messages.create'); // Prikaz forme za slanje poruke vlasniku oglasa
-    Route::post('/ads/{ad}/message', [MessageController::class, 'store'])->name('messages.store'); // Slanje poruke
+    Route::controller(MessageController::class)->prefix('ads')->group(function () {
+        Route::get('/{ad}/message','create')->name('messages.create'); // Prikaz forme za slanje poruke vlasniku oglasa
+        Route::post('/{ad}/message','store')->name('messages.store'); // Slanje poruke
+    });
 
     // -----------------------------------------
     // Upravljanje oglasima - CRUD operacije
@@ -56,12 +60,14 @@ Route::middleware('auth')->group(function () {
     // -----------------------------------------
     // Poruke vezane za kupovinu/prodaju oglasa
     // -----------------------------------------
-    // Prikaz svih chatova gde je korisnik učesnik
-    Route::get('/messages', [MessageController::class, 'index'])->name('messages.index');
-    // Prikaz poruka za određeni oglas
-    Route::get('/ads/{ad}/chat', [MessageController::class, 'showChat'])->name('messages.chat');
-    // Slanje nove poruke
-    Route::post('/ads/{ad}/message', [MessageController::class, 'store'])->name('messages.store');
+    Route::middleware('auth')->group(function () {
+        // Prikaz liste četova gde je korisnik učesnik
+        Route::get('/messages', [MessageController::class, 'index'])->name('messages.index');
+        // Prikaz pojedinačnog četa (jedan oglas + jedan sagovornik)
+        Route::get('/ads/{ad}/chat/{partnerId}', [MessageController::class, 'showChat'])->name('messages.chat');
+        // Slanje nove poruke
+        Route::post('/ads/{ad}/message', [MessageController::class, 'store'])->name('messages.store');
+    });
 });
 
 // -----------------------------------------

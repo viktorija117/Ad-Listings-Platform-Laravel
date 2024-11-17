@@ -111,6 +111,70 @@ class AdController extends Controller
         return redirect()->route('ads.index')->with('success', 'Oglas uspešno obrisan.');
     }
 
+    public function edit(Ad $ad)
+    {
+        // Proveri da li korisnik može urediti ovaj oglas
+        if (!auth()->user()->can('update', $ad)) {
+            return redirect()->route('ads.index')->with('error', 'Nemate dozvolu za uređivanje ovog oglasa.');
+        }
+
+        $categories = Category::all();
+        $locations = Location::all();
+
+        return view('ads.edit', compact('ad', 'categories', 'locations'));
+    }
+
+    public function update(Request $request, Ad $ad)
+    {
+        // Proveri da li korisnik može ažurirati ovaj oglas
+        if (!auth()->user()->can('update', $ad)) {
+            return redirect()->route('ads.index')->with('error', 'Nemate dozvolu za ažuriranje ovog oglasa.');
+        }
+
+        $request->validate([
+            'title' => 'required|max:255',
+            'description' => 'required',
+            'price' => 'required|numeric',
+            'category_id' => 'required|exists:categories,id',
+            'location_id' => 'required|exists:locations,id',
+            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+        ]);
+
+        // Ažuriranje osnovnih podataka oglasa
+        $ad->update($request->only(['title', 'description', 'price', 'category_id', 'location_id']));
+
+        // Upload novih slika
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {
+                $imagePath = $image->store('ads', 'public');
+                AdImage::create([
+                    'ad_id' => $ad->id,
+                    'image_path' => $imagePath,
+                ]);
+            }
+        }
+
+        return redirect()->route('ads.index')->with('success', 'Oglas uspešno ažuriran.');
+    }
+
+    public function destroyImage(Ad $ad, AdImage $image)
+    {
+        // Proveri da li korisnik može obrisati slike
+        if (!auth()->user()->can('update', $ad)) {
+            return redirect()->route('ads.index')->with('error', 'Nemate dozvolu za brisanje slika.');
+        }
+
+        // Brisanje slike iz sistema
+        if (Storage::exists('public/' . $image->image_path)) {
+            Storage::delete('public/' . $image->image_path);
+        }
+
+        $image->delete();
+
+        return redirect()->back()->with('success', 'Slika uspešno obrisana.');
+    }
+
+
     public function myAds()
     {
         // Prikaz oglasa trenutnog korisnika

@@ -51,9 +51,8 @@
             </div>
 
             <!-- Grupa za administraciju -->
-            @if(auth()->user()->can('manage', App\Models\Category::class) || auth()->user()->can('manage', App\Models\Location::class))
+            @if(auth()->user()->can('manage', App\Models\Category::class) && auth()->user()->can('manage', App\Models\Location::class))
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    @if(auth()->user()->can('manage', App\Models\Category::class))
                         <div class="bg-white rounded-xl shadow-md p-6 flex flex-col items-center">
                             <div class="text-red-500 mb-4">
                                 <i class="fa-solid fa-list"></i>
@@ -61,9 +60,7 @@
                             <h4 class="text-lg font-bold mb-4 text-gray-800">Upravljaj kategorijama</h4>
                             <a href="{{ route('categories.index') }}" class="px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700">Upravljaj</a>
                         </div>
-                    @endif
 
-                    @if(auth()->user()->can('manage', App\Models\Location::class))
                         <div class="bg-white rounded-xl shadow-md p-6 flex flex-col items-center">
                             <div class="text-red-500 mb-4">
                                 <i class="fas fa-location-dot"></i>
@@ -71,7 +68,6 @@
                             <h4 class="text-lg font-bold mb-4 text-gray-800">Upravljaj lokacijama</h4>
                             <a href="{{ route('locations.index') }}" class="px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700">Upravljaj</a>
                         </div>
-                    @endif
                 </div>
             @endif
         </div>

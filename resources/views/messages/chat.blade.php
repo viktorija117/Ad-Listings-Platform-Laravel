@@ -6,51 +6,26 @@
     </x-slot>
 
     <div class="py-12">
-        <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-6">
-                <!-- Prikaz sa kim se dopisujemo -->
-                <div class="mb-6 p-4 bg-gray-100 rounded-lg shadow-md">
-                    <h3 class="text-lg font-semibold">
-                        Dopisujete se sa:
-                        @if($messages->first()->sender_id === auth()->id())
-                            {{ $messages->first()->receiver->name }}
-                        @else
-                            {{ $messages->first()->sender->name }}
-                        @endif
-                    </h3>
-                </div>
-
-                <!-- Prikaz svih poruka -->
-                <div class="space-y-4">
+                <div>
                     @foreach($messages as $message)
-                        @if($message->sender_id === auth()->id())
-                            <!-- Moja poruka -->
-                            <div class="flex justify-end">
-                                <div class="bg-gray-200 text-gray-900 rounded-lg p-4 max-w-md shadow-lg">
-                                    <p>{{ $message->message }}</p>
-                                    <span class="text-xs text-gray-500">{{ $message->created_at->format('H:i') }}</span>
-                                </div>
-                            </div>
-                        @else
-                            <!-- Poruka sagovornika -->
-                            <div class="flex justify-start">
-                                <div class="bg-blue-200 text-gray-900 rounded-lg p-4 max-w-md shadow-lg">
-                                    <p>{{ $message->message }}</p>
-                                    <span class="text-xs text-gray-500">{{ $message->created_at->format('H:i') }}</span>
-                                </div>
-                            </div>
-                        @endif
+                        <div class="mb-4 {{ $message->sender_id === auth()->id() ? 'text-right' : 'text-left' }}">
+                            <p class="p-3 rounded-lg {{ $message->sender_id === auth()->id() ? 'bg-blue-200' : 'bg-gray-200' }}">
+                                {{ $message->message }}
+                            </p>
+                            <small class="text-gray-500">{{ $message->created_at->format('d.m.Y H:i') }}</small>
+                        </div>
                     @endforeach
                 </div>
 
-                <!-- Forma za slanje nove poruke -->
-                <form action="{{ route('messages.store', $ad) }}" method="POST" class="mt-6">
+                <form method="POST" action="{{ route('messages.store', $ad) }}">
                     @csrf
-                    <textarea name="message" class="w-full border border-gray-300 rounded-lg p-2" rows="3" placeholder="Unesite poruku"></textarea>
-                    <input type="hidden" name="receiver_id" value="{{ $messages->first()->receiver_id ?? $ad->user_id }}">
-                    <button type="submit" class="mt-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-                        Pošalji
-                    </button>
+                    <input type="hidden" name="receiver_id" value="{{ $partner->id }}">
+                    <div class="flex items-center mt-4">
+                        <textarea name="message" class="w-full p-2 border rounded" rows="3" required></textarea>
+                        <button type="submit" class="ml-2 px-4 py-2 bg-indigo-600 text-white rounded">Pošalji</button>
+                    </div>
                 </form>
             </div>
         </div>
