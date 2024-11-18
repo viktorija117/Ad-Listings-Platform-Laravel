@@ -20,40 +20,32 @@ Route::get('/dashboard', function () {
 // Grupa ruta za autentifikovane korisnike
 Route::middleware('auth')->group(function () {
 
-    // -----------------------------------------
     // Profil korisnika (prikaz, izmena, brisanje)
-    // -----------------------------------------
     Route::controller(ProfileController::class)->prefix('profile')->group(function () {
         Route::get( 'edit')->name('profile.edit'); // Prikaz forme za izmenu profila
         Route::patch('update')->name('profile.update'); // Ažuriranje profila
         Route::delete( 'destroy')->name('profile.destroy'); // Brisanje profila
     });
 
-    // -----------------------------------------
     // Oglasi - pretraga i prikaz
-    // -----------------------------------------
     Route::controller(AdController::class)->group(function () {
         Route::get('/my-ads', 'myAds')->name('my.ads'); // Prikaz oglasa koje je korisnik postavio
         Route::get('/ads', 'index')->name('ads.index'); // Prikaz svih oglasa
     });
 
-    // -----------------------------------------
     // Upravljanje oglasima - CRUD operacije
-    // -----------------------------------------
     Route::resource('ads', AdController::class); // Svi standardni CRUD (kreiranje, prikaz, izmena, brisanje oglasa)
-    Route::get('ads/{ad}/edit', [AdController::class, 'edit'])->name('ads.edit'); // Prikaz forme za izmenu oglasa
-    Route::put('ads/{ad}', [AdController::class, 'update'])->name('ads.update'); // Ažuriranje oglasa
-    Route::delete('/ads/{ad}/images/{image}', [AdController::class, 'destroyImage'])->name('ads.image.destroy'); // Brisanje slike iz oglasa
+    Route::controller(AdController::class)->prefix('ads/{ad}')->group(function () {
+        Route::get('/edit', 'edit')->name('ads.edit'); // Prikaz forme za izmenu oglasa
+        Route::put('/',  'update')->name('ads.update'); // Ažuriranje oglasa
+        Route::delete('/images/{image}','destroyImage')->name('ads.image.destroy'); // Brisanje slike iz oglasa
+    });
 
-    // -----------------------------------------
     // Upravljanje kategorijama i lokacijama (CRUD)
-    // -----------------------------------------
     Route::resource('categories', CategoryController::class); // Upravljanje kategorijama
     Route::resource('locations', LocationController::class); // Upravljanje lokacijama
 
-    // -----------------------------------------
     // Poruke vezane za kupovinu/prodaju oglasa
-    // -----------------------------------------
     Route::middleware('auth')->group(function () {
         // Prikaz liste četova gde je korisnik učesnik
         Route::get('/messages', [MessageController::class, 'index'])->name('messages.index');
@@ -64,8 +56,6 @@ Route::middleware('auth')->group(function () {
     });
 });
 
-// -----------------------------------------
 // Autentifikacija i registracija korisnika
-// -----------------------------------------
 require __DIR__.'/auth.php';
 

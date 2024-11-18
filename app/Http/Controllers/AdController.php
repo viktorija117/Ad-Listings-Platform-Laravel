@@ -113,7 +113,7 @@ class AdController extends Controller
 
     public function edit(Ad $ad)
     {
-        // Proveri da li korisnik može urediti ovaj oglas
+        // Proveri da li korisnik ima dozvolu da uređuje oglas
         if (!auth()->user()->can('update', $ad)) {
             return redirect()->route('ads.index')->with('error', 'Nemate dozvolu za uređivanje ovog oglasa.');
         }
@@ -126,7 +126,7 @@ class AdController extends Controller
 
     public function update(Request $request, Ad $ad)
     {
-        // Proveri da li korisnik može ažurirati ovaj oglas
+        // Proveri da li korisnik ima dozvolu da ažurira oglas
         if (!auth()->user()->can('update', $ad)) {
             return redirect()->route('ads.index')->with('error', 'Nemate dozvolu za ažuriranje ovog oglasa.');
         }
@@ -159,19 +159,20 @@ class AdController extends Controller
 
     public function destroyImage(Ad $ad, AdImage $image)
     {
-        // Proveri da li korisnik može obrisati slike
-        if (!auth()->user()->can('update', $ad)) {
-            return redirect()->route('ads.index')->with('error', 'Nemate dozvolu za brisanje slika.');
+        // Proveri da li slika pripada oglasu
+        if ($image->ad_id !== $ad->id) {
+            return redirect()->back()->with('error', 'Ne možete obrisati ovu sliku.');
         }
 
-        // Brisanje slike iz sistema
+        // Brisanje slike iz skladišta
         if (Storage::exists('public/' . $image->image_path)) {
             Storage::delete('public/' . $image->image_path);
         }
 
+        // Brisanje slike iz baze
         $image->delete();
 
-        return redirect()->back()->with('success', 'Slika uspešno obrisana.');
+        return redirect()->back()->with('success', 'Slika je uspešno obrisana.');
     }
 
 
