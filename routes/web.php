@@ -35,11 +35,6 @@ Route::middleware('auth')->group(function () {
 
     // Upravljanje oglasima - CRUD operacije
     Route::resource('ads', AdController::class); // Svi standardni CRUD (kreiranje, prikaz, izmena, brisanje oglasa)
-    Route::controller(AdController::class)->prefix('ads/{ad}')->group(function () {
-        Route::get('/edit', 'edit')->name('ads.edit'); // Prikaz forme za izmenu oglasa
-        Route::put('/',  'update')->name('ads.update'); // Ažuriranje oglasa
-        Route::delete('/images/{image}','destroyImage')->name('ads.image.destroy'); // Brisanje slike iz oglasa
-    });
 
     // Upravljanje kategorijama i lokacijama (CRUD)
     Route::resource('categories', CategoryController::class); // Upravljanje kategorijama

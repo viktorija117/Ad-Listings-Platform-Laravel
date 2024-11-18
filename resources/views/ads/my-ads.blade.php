@@ -49,11 +49,6 @@
                                 <p class="text-gray-600">Lokacija: {{ $ad->location->name }}</p>
                                 <p class="text-gray-600">Kategorija: {{ $ad->category->name }}</p>
 
-                                <!-- Dugme za izmenu -->
-                                <a href="{{ route('ads.edit', $ad) }}" class="inline-block mt-2 px-4 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700">
-                                    Izmeni oglas
-                                </a>
-
                                 <!-- Dugme za brisanje -->
                                 <form action="{{ route('ads.destroy', $ad) }}" method="POST" class="inline-block mt-2">
                                     @csrf
