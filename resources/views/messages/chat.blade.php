@@ -8,6 +8,15 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-6">
+                <!-- Prikaz informacija o oglasu i sagovorniku -->
+                <div class="mb-6 p-4 bg-gray-100 rounded-lg shadow-md">
+                    <h3 class="text-lg font-bold">
+                        Dopisujete se sa: {{ $partner->name }}
+                    </h3>
+                    <p class="text-gray-600">Oglas: <a href="{{ route('ads.show', $ad) }}" class="text-blue-600 hover:underline">{{ $ad->title }}</a></p>
+                </div>
+
+                <!-- Prikaz poruka -->
                 <div>
                     @foreach($messages as $message)
                         <div class="mb-4 {{ $message->sender_id === auth()->id() ? 'text-right' : 'text-left' }}">
@@ -19,6 +28,7 @@
                     @endforeach
                 </div>
 
+                <!-- Forma za slanje poruka -->
                 <form method="POST" action="{{ route('messages.store', $ad) }}">
                     @csrf
                     <input type="hidden" name="receiver_id" value="{{ $partner->id }}">

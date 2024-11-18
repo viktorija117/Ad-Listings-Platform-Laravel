@@ -32,15 +32,9 @@ Route::middleware('auth')->group(function () {
     // -----------------------------------------
     // Oglasi - pretraga i prikaz
     // -----------------------------------------
-    Route::get('/my-ads', [AdController::class, 'myAds'])->name('my.ads'); // Prikaz oglasa koje je korisnik postavio
-    Route::get('/ads', [AdController::class, 'index'])->name('ads.index'); // Prikaz svih oglasa
-
-    // -----------------------------------------
-    // Poruke
-    // -----------------------------------------
-    Route::controller(MessageController::class)->prefix('ads')->group(function () {
-        Route::get('/{ad}/message','create')->name('messages.create'); // Prikaz forme za slanje poruke vlasniku oglasa
-        Route::post('/{ad}/message','store')->name('messages.store'); // Slanje poruke
+    Route::controller(AdController::class)->group(function () {
+        Route::get('/my-ads', 'myAds')->name('my.ads'); // Prikaz oglasa koje je korisnik postavio
+        Route::get('/ads', 'index')->name('ads.index'); // Prikaz svih oglasa
     });
 
     // -----------------------------------------

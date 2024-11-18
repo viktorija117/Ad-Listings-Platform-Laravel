@@ -27,6 +27,9 @@ class RolesAndPermissionsSeeder extends Seeder
         // Dozvoli adminu da kreira oglase
         Bouncer::allow('admin')->to('create', Ad::class);
 
+        // Dozvoli adminu da menja svoje oglase
+        Bouncer::allow('admin')->to('update', Ad::class);
+
         // Dozvoli korisnicima da kreiraju i upravljaju samo svojim oglasima
         Bouncer::allow('user')->to('create', Ad::class);
         Bouncer::allow('user')->toOwn(Ad::class)->to('delete');

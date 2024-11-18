@@ -42,20 +42,6 @@
                         <a href="{{ route('messages.chat', ['ad' => $ad->id, 'partnerId' => $ad->user->id]) }}" class="mt-2 inline-block px-4 py-2 bg-green-800 text-white rounded-lg shadow-md hover:bg-green-700">
                             Otvori čet
                         </a>
-
-
-                        <!-- Forma za slanje poruke -->
-                    <form action="{{ route('messages.store', $ad) }}" method="POST" class="mt-6">
-                        @csrf
-                        <textarea name="message" class="w-full border border-gray-300 rounded-lg p-2" rows="3" placeholder="Unesite poruku"></textarea>
-
-                        <!-- Automatski postavljamo ID vlasnika oglasa kao primaoca -->
-                        <input type="hidden" name="receiver_id" value="{{ $ad->user->id }}">
-
-                        <button type="submit" class="mt-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-                            Pošalji poruku
-                        </button>
-                    </form>
                 @endif
             </div>
         </div>
