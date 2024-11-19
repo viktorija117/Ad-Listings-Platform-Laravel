@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateAdRequest;
+use App\Http\Requests\DestroyAdRequest;
+use App\Http\Requests\StoreAdRequest;
 use App\Models\Ad;
 use App\Models\AdImage;
 use App\Models\Category;
 use App\Models\Location;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
-use Silber\Bouncer\BouncerFacade as Bouncer;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+
 
 class AdController extends Controller
 {
@@ -48,36 +49,21 @@ class AdController extends Controller
     }
 
 
-    public function create(): View|RedirectResponse
+    public function create(CreateAdRequest $request): View
     {
-        // Da li korisnik ima dozvolu za kreiranje oglasa
-        if (!auth()->user()->can('create', Ad::class)) {
-            return redirect()->route('ads.index')->with('error', 'Nemate dozvolu za kreiranje oglasa.');
-        }
-
         $categories = Category::all();
         $locations = Location::all();
         return view('ads.create', compact('categories', 'locations'));
     }
 
-    public function store(Request $request): \Illuminate\Http\RedirectResponse
-    {
-        // Da li korisnik ima dozvolu za kreiranje oglasa
-        if (!auth()->user()->can('create', Ad::class)) {
-            return redirect()->route('ads.index')->with('error', 'Nemate dozvolu za kreiranje oglasa.');
-        }
 
-        $request->validate([
-            'title' => 'required|max:255',
-            'description' => 'required',
-            'price' => 'required|numeric',
-            'category_id' => 'required|exists:categories,id',
-            'location_id' => 'required|exists:locations,id',
-            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
-        ]);
+    public function store(StoreAdRequest $request): \Illuminate\Http\RedirectResponse
+    {
+        // Automatski validira podatke kroz StoreAdRequest
+        $validated = $request->validated();
 
         // Kreiranje oglasa
-        $ad = new Ad($request->all());
+        $ad = new Ad($validated);
         $ad->user_id = auth()->id();
         $ad->save();
 
@@ -100,16 +86,12 @@ class AdController extends Controller
         return view('ads.show', compact('ad'));
     }
 
-    public function destroy(Ad $ad)
+    public function destroy(DestroyAdRequest $request, Ad $ad)
     {
-        // Da li korisnik može obrisati ovaj oglas
-        if (!auth()->user()->can('delete', $ad)) {
-            return redirect()->route('ads.index')->with('error', 'Nemate dozvolu za brisanje ovog oglasa.');
-        }
-
         $ad->delete();
         return redirect()->route('ads.index')->with('success', 'Oglas uspešno obrisan.');
     }
+
 
     public function myAds()
     {

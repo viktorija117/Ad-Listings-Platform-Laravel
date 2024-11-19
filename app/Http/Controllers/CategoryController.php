@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreCategoryRequest;
+use App\Http\Requests\UpdateCategoryRequest;
+use App\Http\Requests\DestroyCategoryRequest;
 use App\Models\Category;
-use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
@@ -18,15 +20,9 @@ class CategoryController extends Controller
         return view('categories.create');
     }
 
-    public function store(Request $request)
+    public function store(StoreCategoryRequest $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-        ]);
-
-        Category::create([
-            'name' => $request->name,
-        ]);
+        Category::create($request->validated());
 
         return redirect()->route('categories.index')->with('success', 'Kategorija uspešno kreirana.');
     }
@@ -36,35 +32,22 @@ class CategoryController extends Controller
         return view('categories.edit', compact('category'));
     }
 
-    public function update(Request $request, Category $category)
+    public function update(UpdateCategoryRequest $request, Category $category)
     {
-
-        // Ako kategorija ima oglase, zabrani edit
+        // Ako kategorija ima oglase, validacija se dešava u DestroyCategoryRequest.
         if ($category->ads()->count() > 0) {
             return redirect()->route('categories.index')->with('error', 'Ne možete uređivati kategoriju jer ima povezane oglase.');
         }
 
-        $request->validate([
-            'name' => 'required|string|max:255',
-        ]);
-
-        $category->update([
-            'name' => $request->name,
-        ]);
+        $category->update($request->validated());
 
         return redirect()->route('categories.index')->with('success', 'Kategorija uspešno ažurirana.');
     }
 
-    public function destroy(Category $category)
+    public function destroy(DestroyCategoryRequest $request, Category $category)
     {
-        // Ako kategorija ima oglase, zabrani brisanje
-        if ($category->ads()->count() > 0) {
-            return redirect()->route('categories.index')->with('error', 'Ne možete obrisati kategoriju jer ima povezane oglase.');
-        }
-
         $category->delete();
 
         return redirect()->route('categories.index')->with('success', 'Kategorija uspešno obrisana.');
     }
 }
-
