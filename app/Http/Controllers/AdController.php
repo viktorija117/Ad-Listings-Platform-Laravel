@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CreateAdRequest;
-use App\Http\Requests\DestroyAdRequest;
-use App\Http\Requests\StoreAdRequest;
+use App\Http\Requests\Ad\CreateAdRequest;
+use App\Http\Requests\Ad\DestroyAdRequest;
+use App\Http\Requests\Ad\StoreAdRequest;
 use App\Models\Ad;
 use App\Models\AdImage;
 use App\Models\Category;

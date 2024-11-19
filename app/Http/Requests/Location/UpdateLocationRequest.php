@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Location;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateCategoryRequest extends FormRequest
+class UpdateLocationRequest extends FormRequest
 {
     public function authorize()
     {
@@ -21,8 +21,8 @@ class UpdateCategoryRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.required' => 'Ime kategorije je obavezno.',
-            'name.max' => 'Ime kategorije ne sme imati više od 255 karaktera.',
+            'name.required' => 'Ime lokacije je obavezno.',
+            'name.max' => 'Ime lokacije ne sme imati više od 255 karaktera.',
         ];
     }
 }

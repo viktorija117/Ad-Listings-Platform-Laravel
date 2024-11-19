@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Location\DestroyLocationRequest;
+use App\Http\Requests\Location\StoreLocationRequest;
+use App\Http\Requests\Location\UpdateLocationRequest;
 use App\Models\Location;
-use Illuminate\Http\Request;
 
 class LocationController extends Controller
 {
@@ -18,15 +20,9 @@ class LocationController extends Controller
         return view('locations.create');
     }
 
-    public function store(Request $request)
+    public function store(StoreLocationRequest $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-        ]);
-
-        Location::create([
-            'name' => $request->name,
-        ]);
+        Location::create($request->validated());
 
         return redirect()->route('locations.index')->with('success', 'Lokacija uspešno kreirana.');
     }
@@ -36,33 +32,22 @@ class LocationController extends Controller
         return view('locations.edit', compact('location'));
     }
 
-    public function update(Request $request, Location $location)
+    public function update(UpdateLocationRequest $request, Location $location)
     {
-        // Ako lokacija ima oglase, zabrani edit
+        // Proveru da li lokacija ima oglase sada možemo obaviti u request klasi ako je potrebno.
         if ($location->ads()->count() > 0) {
             return redirect()->route('locations.index')->with('error', 'Ne možete urediti lokaciju jer ima povezane oglase.');
         }
 
-        $request->validate([
-            'name' => 'required|string|max:255',
-        ]);
-
-        $location->update([
-            'name' => $request->name,
-        ]);
+        $location->update($request->validated());
 
         return redirect()->route('locations.index')->with('success', 'Lokacija uspešno ažurirana.');
     }
 
-    public function destroy(Location $location)
+    public function destroy(DestroyLocationRequest $request, Location $location)
     {
-        // Ako lokacija ima oglase, zabrani brisanje
-        if ($location->ads()->count() > 0) {
-            return redirect()->route('locations.index')->with('error', 'Ne možete obrisati lokaciju jer ima povezane oglase.');
-        }
         $location->delete();
 
         return redirect()->route('locations.index')->with('success', 'Lokacija uspešno obrisana.');
     }
-
 }

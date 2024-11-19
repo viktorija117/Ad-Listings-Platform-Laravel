@@ -42,12 +42,9 @@ Route::middleware('auth')->group(function () {
 
     // Poruke vezane za kupovinu/prodaju oglasa
     Route::middleware('auth')->group(function () {
-        // Prikaz liste četova gde je korisnik učesnik
-        Route::get('/messages', [MessageController::class, 'index'])->name('messages.index');
-        // Prikaz pojedinačnog četa (jedan oglas + jedan sagovornik)
-        Route::get('/ads/{ad}/chat/{partnerId}', [MessageController::class, 'showChat'])->name('messages.chat');
-        // Slanje nove poruke
-        Route::post('/ads/{ad}/message', [MessageController::class, 'store'])->name('messages.store');
+        Route::get('/messages', [MessageController::class, 'index'])->name('messages.index'); // Prikaz liste četova gde je korisnik učesnik
+        Route::get('/ads/{ad}/chat/{partnerId}', [MessageController::class, 'showChat'])->name('messages.chat'); // Prikaz pojedinačnog četa (jedan oglas + jedan sagovornik)
+        Route::post('/ads/{ad}/message', [MessageController::class, 'store'])->name('messages.store'); // Slanje nove poruke
     });
 });
 
