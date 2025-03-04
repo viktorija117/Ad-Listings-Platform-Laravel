@@ -15,7 +15,7 @@ Chat system tied to specific ads.
 
 ## Installation
 - Clone the repo:
-git clone https://github.com/viktorija117/KupujemProdajem-Laravel
+git clone https://github.com/viktorija117/Ad-Listings-Platform-Laravel
 - Install dependencies:
 composer install && npm install
 npm run dev
